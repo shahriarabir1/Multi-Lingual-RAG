@@ -47,9 +47,9 @@ If you cannot find the answer in the context, say so in Bengali."""
 
 def improved_rag_qa(user_question_bn):
     try:
-        print(f"🔎 Question: {user_question_bn}")
+        print(f" Question: {user_question_bn}")
         
-        print("🔍 Embedding question and retrieving context...")
+        print(" Embedding question and retrieving context...")
         embedder = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
         index, chunks = load_index_and_metadata()
 
@@ -59,15 +59,15 @@ def improved_rag_qa(user_question_bn):
         print(f"   Retrieved {len(top_chunks)} relevant chunks")
         print(f"   Similarity scores: {[f'{1/(1+d):.3f}' for d in distances[:3]]}")
         
-        print("💬 Asking OpenAI...")
+        print(" Asking OpenAI...")
         bangla_answer = ask_openai_with_bangla_context(user_question_bn, top_chunks)
         
         print("\n" + "="*60)
-        print("📚 ANSWER:")
+        print(" ANSWER:")
         print(bangla_answer)
         print("="*60)
         
-        print("\n📖 RELEVANT CONTEXT:")
+        print("\n RELEVANT CONTEXT:")
         for i, chunk in enumerate(top_chunks[:3]):
             print(f"\n[{i+1}] {chunk['text'][:200]}{'...' if len(chunk['text']) > 200 else ''}")
         
@@ -78,7 +78,7 @@ def improved_rag_qa(user_question_bn):
         }
         
     except Exception as e:
-        print(f"❌ Error occurred: {str(e)}")
+        print(f" Error occurred: {str(e)}")
         print(f"Error type: {type(e).__name__}")
         return None
 
@@ -89,7 +89,7 @@ def interactive_chat():
     while True:
         question = input("প্রশ্ন: ").strip()
         if question.lower() in ["exit", "quit", "বের হও", "বেরিয়ে যাও"]:
-            print("👋 বিদায়!")
+            print(" বিদায়!")
             break
         
         if question:
@@ -99,7 +99,7 @@ def interactive_chat():
 if __name__ == "__main__":
  
     test_question = "অনুপমের ভাষায় সুপুরুষ কাকে বলা হয়েছে?"
-    print("🧪 Testing with sample question:")
+    print(" Testing with sample question:")
     improved_rag_qa(test_question)
     
     print("\n" + "="*60)

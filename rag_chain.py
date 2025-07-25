@@ -35,7 +35,7 @@ def load_rag_chain(filepath: str):
         
        
         if os.path.exists(index_path):
-            print("📥 Loading existing FAISS vector store...")
+            print(" Loading existing FAISS vector store...")
             embeddings = HuggingFaceEmbeddings(
                 model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
                 model_kwargs={'device': 'cpu'},
@@ -45,27 +45,27 @@ def load_rag_chain(filepath: str):
         
         else:
            
-            print(f"📄 Loading document from: {filepath}")
+            print(f"Loading document from: {filepath}")
             loader = TextLoader(filepath, encoding="utf-8")
             documents = loader.load()
             
-            print("✂️ Splitting...")
+            print(" Splitting...")
             splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
             split_docs = splitter.split_documents(documents)
 
-            print("🔗 Creating embeddings...")
+            print(" Creating embeddings...")
             embeddings = HuggingFaceEmbeddings(
                 model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
                 model_kwargs={'device': 'cpu'},
                 encode_kwargs={'normalize_embeddings': True}
             )
 
-            print("🗃️ Creating vector store...")
+            print(" Creating vector store...")
             vectorstore = FAISS.from_documents(split_docs, embeddings)
 
             # Save vectorstore
             vectorstore.save_local(index_path)
-            print("💾 Vector store saved to disk.")
+            print(" Vector store saved to disk.")
 
         #  retriever
         retriever = vectorstore.as_retriever(
@@ -74,7 +74,7 @@ def load_rag_chain(filepath: str):
         )
 
  
-        print("🤖 Initializing LLM...")
+        print(" Initializing LLM...")
         llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.2, max_tokens=500)
 
         #  chain
@@ -85,11 +85,11 @@ def load_rag_chain(filepath: str):
             return_source_documents=True
         )
 
-        print("✅ RAG chain ready (cached or built)")
+        print(" RAG chain ready (cached or built)")
         return qa_chain
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f" Error: {e}")
         return None
 
 
@@ -99,13 +99,13 @@ def test_rag_chain(filepath: str, test_question: str = "What is this document ab
     try:
         chain = load_rag_chain(filepath)
         if chain:
-            print(f"\n🧪 Testing with question: '{test_question}'")
+            print(f" Testing with question: '{test_question}'")
             result = chain.invoke({"query": test_question})
-            print(f"✅ Test Answer: {result['result']}")
+            print(f" Test Answer: {result['result']}")
             return True
         return False
     except Exception as e:
-        print(f"❌ Test failed: {e}")
+        print(f" Test failed: {e}")
         return False
 
 if __name__ == "__main__":
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     if os.path.exists(test_filepath):
         test_rag_chain(test_filepath)
     else:
-        print(f"❌ Test file not found: {test_filepath}")
+        print(f"Test file not found: {test_filepath}")

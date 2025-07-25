@@ -15,29 +15,29 @@ try:
     if not text.strip():
         raise ValueError("The text file is empty. Please check OCR output.")
     
-    print("📖 Text file loaded successfully")
+    print(" Text file loaded successfully")
     
 
     splitter = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=50)
     texts = splitter.split_text(text)
     docs = [Document(page_content=t) for t in texts]
     
-    print(f"📄 Text split into {len(docs)} chunks")
+    print(f"Text split into {len(docs)} chunks")
 
-    print("🤖 Loading embedding model...")
+    print(" Loading embedding model...")
     embedding_model = HuggingFaceEmbeddings(
         model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
     )
 
-    print("🔍 Creating vector store...")
+    print(" Creating vector store...")
     vectorstore = FAISS.from_documents(docs, embedding_model)
     vectorstore.save_local("bangla_faiss_index")
     
-    print("✅ Vector store created and saved successfully!")
+    print(" Vector store created and saved successfully!")
     
 except FileNotFoundError as e:
-    print(f"❌ File Error: {e}")
+    print(f" File Error: {e}")
 except ValueError as e:
-    print(f"❌ Value Error: {e}")
+    print(f" Value Error: {e}")
 except Exception as e:
-    print(f"❌ Unexpected Error: {e}")
+    print(f" Unexpected Error: {e}")

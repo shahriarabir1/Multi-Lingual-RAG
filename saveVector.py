@@ -21,32 +21,32 @@ def build_and_save_vectorstore():
         return
 
     if not os.path.exists(input_file):
-        raise FileNotFoundError(f"❌ File not found: {input_file}")
+        raise FileNotFoundError(f" File not found: {input_file}")
 
-    print("📄 Loading document...")
+    print(" Loading document...")
     loader = TextLoader(input_file, encoding="utf-8")
     documents = loader.load()
 
-    print("✂️ Splitting text...")
+    print(" Splitting text...")
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
         chunk_overlap=chunk_overlap
     )
     split_docs = splitter.split_documents(documents)
 
-    print("🔗 Creating multilingual embeddings...")
+    print(" Creating multilingual embeddings...")
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
         model_kwargs={'device': 'cpu'},
         encode_kwargs={'normalize_embeddings': True}
     )
 
-    print("🗃️ Creating FAISS vector store...")
+    print(" Creating FAISS vector store...")
     vectorstore = FAISS.from_documents(split_docs, embeddings)
 
-    print(f"💾 Saving vector store to: {vectorstore_dir}")
+    print(f" Saving vector store to: {vectorstore_dir}")
     vectorstore.save_local(vectorstore_dir)
-    print("✅ Vector store saved successfully.")
+    print(" Vector store saved successfully.")
 
 if __name__ == "__main__":
     build_and_save_vectorstore()

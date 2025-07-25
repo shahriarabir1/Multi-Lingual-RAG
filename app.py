@@ -7,7 +7,7 @@ load_dotenv()
 file_path = "answered_output.txt"
 chain = load_rag_chain(file_path)
 
-print("\n💬 Bengali Multilingual RAG 10 Minutws School")
+print(" Bengali Multilingual RAG 10 Minutws School")
 print("Type 'exit' to quit.\n")
 
 while True:
@@ -15,4 +15,4 @@ while True:
     if question.strip().lower() in ['exit', 'quit']:
         break
     result = chain(question)
-    print(f"🤖 Answer: {result['result']}\n")
+    print(f" Answer: {result['result']}\n")

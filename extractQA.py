@@ -3,11 +3,9 @@ import re
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# === Step 1: Load environment variables ===
 load_dotenv()
-client = OpenAI()  # Assumes OPENAI_API_KEY is set in .env
+client = OpenAI()  
 
-# === Step 2: Define functions ===
 
 def extract_questions(text):
     """Extract questions ending with '?' from the given text."""
@@ -46,7 +44,7 @@ def append_answers_to_text(text):
 
     return '\n'.join(updated_lines)
 
-# === Step 3: Load original OCR text ===
+
 
 input_file = "output_text.txt"
 output_file = "answered_output.txt"
@@ -57,14 +55,14 @@ if not os.path.exists(input_file):
 with open(input_file, "r", encoding="utf-8") as f:
     all_text = f.read()
 
-# === Step 4: Process and append answers ===
 
-print("🔍 Processing questions and generating answers...")
+
+print(" Processing questions and generating answers...")
 final_text = append_answers_to_text(all_text)
 
-# === Step 5: Save the output ===
+
 
 with open(output_file, "w", encoding="utf-8") as f:
     f.write(final_text)
 
-print(f"✅ Questions with answers saved to {output_file}")
+print(f" Questions with answers saved to {output_file}")
